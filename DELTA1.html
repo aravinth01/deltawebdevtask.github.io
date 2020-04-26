@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<style type="text/css">
+		body{
+			background-color: #232323;
+		}
+
+		.square{
+			width: 16%;
+			background: black;
+			float:left;
+			margin: 1.5%;
+		}
+
+		#grid{
+			padding: 25px 5px 295px 25px;
+			margin: 0 auto;
+			max-width: 500px;
+			font-family: "Arial";
+			font-size: 45px;
+			text-align: center;
+			color: #006400;
+			border: 5px solid white; 
+		}
+
+		h1{
+			font-family: "Arial";
+			color: #006400;
+		}
+		h3{ 
+			padding-left: 25px;
+			color: white;
+		}
+
+		#timer{
+			padding: 0px 25px 0px 25px;
+			text-align: right;
+		}
+		button {
+			font-family: "Arial";
+			background-color: #006400;
+			border: 1px solid black;
+			color: black;
+			padding: 15px 20px;
+			text-align: center;
+			display: inline-block;
+			font-size: 20px;
+			margin: 4px 2px;
+			transition-duration: 0.4s;
+		}
+		button:hover {
+		  background-color: white;
+		  color:#006400 ;
+		}
+		#time{
+			padding-bottom: 15px;
+			padding-left: 375px;
+		}
+	</style>
+</head>
+<body>
+	<h1 id="timer"><time>00:00:00</time></h1>
+	<button onclick="myFunction()" id="start"><strong>Start Game</strong></button>
+	<h1>BEST SCORES:</h3>
+	<h3 id="time1"></h3>
+	<h3 id="time2"></h3>
+	<h3 id="time3"></h3>
+	<h3 id="time4"></h3>
+	<h3 id="time5"></h3>
+	<h3 id="time"></h3>
+
+
+	<div id="grid">
+		<div class="square"></div>
+		<div class="square"></div>
+		<div class="square"></div>
+		<div class="square"></div>
+		<div class="square"></div>
+		<div class="square"></div>
+		<div class="square"></div>
+		<div class="square"></div>
+		<div class="square"></div>
+		<div class="square"></div>
+		<div class="square"></div>
+		<div class="square"></div>
+		<div class="square"></div>
+		<div class="square"></div>
+		<div class="square"></div>
+		<div class="square"></div>
+		<div class="square"></div>
+		<div class="square"></div>
+		<div class="square"></div>
+		<div class="square"></div>
+	</div>
+<script type="text/javascript">
+	var t1=parseInt(localStorage.getItem("time1"));
+	var t2=parseInt(localStorage.getItem("time2"));
+	var t3=parseInt(localStorage.getItem("time3"));
+	var t4=parseInt(localStorage.getItem("time4"));
+	var t5=parseInt(localStorage.getItem("time5"));
+	var tmax=Math.max(t1,t2,t3,t4,t5);
+
+
+	var hours1 = Math.floor(t1 / 60 / 60);
+	var minutes1 = Math.floor(t1 / 60) - (hours1 * 60);
+	var seconds1 = t1 % 60;
+	var formattedt1 = hours1.toString().padStart(2, '0') + ':' + minutes1.toString().padStart(2, '0') + ':' + seconds1.toString().padStart(2, '0');
+
+	var hours2 = Math.floor(t2 / 60 / 60);
+	var minutes2 = Math.floor(t2 / 60) - (hours2 * 60);
+	var seconds2 = t2 % 60;
+	var formattedt2 = hours2.toString().padStart(2, '0') + ':' + minutes2.toString().padStart(2, '0') + ':' + seconds2.toString().padStart(2, '0');
+
+	var hours3 = Math.floor(t3 / 60 / 60);
+	var minutes3 = Math.floor(t3 / 60) - (hours3 * 60);
+	var seconds3 = t3 % 60;
+	var formattedt3 = hours3.toString().padStart(2, '0') + ':' + minutes3.toString().padStart(2, '0') + ':' + seconds3.toString().padStart(2, '0');
+
+	var hours4 = Math.floor(t4 / 60 / 60);
+	var minutes4 = Math.floor(t4 / 60) - (hours4 * 60);
+	var seconds4 = t4 % 60;
+	var formattedt4 = hours4.toString().padStart(2, '0') + ':' + minutes4.toString().padStart(2, '0') + ':' + seconds4.toString().padStart(2, '0');
+
+	var hours5 = Math.floor(t5 / 60 / 60);
+	var minutes5 = Math.floor(t5 / 60) - (hours5 * 60);
+	var seconds5 = t5 % 60;
+	var formattedt5 = hours5.toString().padStart(2, '0') + ':' + minutes5.toString().padStart(2, '0') + ':' + seconds5.toString().padStart(2, '0');
+
+
+	document.getElementById("time1").innerHTML = formattedt1;
+	document.getElementById("time2").innerHTML = formattedt2;
+	document.getElementById("time3").innerHTML = formattedt3;
+	document.getElementById("time4").innerHTML = formattedt4;
+	document.getElementById("time5").innerHTML = formattedt5;
+
+	function myFunction(){
+		timer();
+		var h1 = document.getElementsByTagName('h1')[0];
+		var start = document.getElementById('start');
+		var seconds = 0, minutes = 0, hours = 0;
+		var t;
+		var numbers = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20];
+		var squares = document.querySelectorAll(".square");
+
+			function shuffle(array) {
+			var currentIndex = array.length, temporaryValue, randomIndex;
+
+			while (0 !== currentIndex) {
+				randomIndex = Math.floor(Math.random() * currentIndex);
+		    	currentIndex -= 1;
+		    	temporaryValue = array[currentIndex];
+		    	array[currentIndex] = array[randomIndex];
+		    	array[randomIndex] = temporaryValue;
+		  	}
+			return array;
+		}
+
+		function add() {
+		    seconds++;
+		    if (seconds >= 60) {
+		        seconds = 0;
+		        minutes++;
+		        if (minutes >= 60) {
+		            minutes = 0;
+		            hours++;
+		        }
+		    }
+		    h1.textContent = (hours ? (hours > 9 ? hours : "0" + hours) : "00") + ":" + (minutes ? (minutes > 9 ? minutes : "0" + minutes) : "00") + ":" + (seconds > 9 ? seconds : "0" + seconds);
+		    timer();
+		}
+
+		function timer() {
+		    t = setTimeout(add, 1000);
+		}
+
+		function timestop() {
+		    clearTimeout(t);
+		    document.getElementById("time").innerHTML = 'YOU FINISHED IN ' + t + ' SECONDS';
+		    store();
+		}
+
+		function store(){
+			if(localStorage.length===0){
+		    	localStorage.setItem("time1", t);
+			} else if(localStorage.length===1){
+		    	localStorage.setItem("time2", t);
+			} else if(localStorage.length===2){
+		    	localStorage.setItem("time3", t);
+			} else if(localStorage.length===3){
+		    	localStorage.setItem("time4", t);
+			} else if(localStorage.length===4){
+		    	localStorage.setItem("time5", t);
+			} else{
+		    	if(tmax>t){
+		        	if(tmax===t1){
+		            	localStorage.setItem("time1", t);
+		        	} else if(tmax===t2){
+		            	localStorage.setItem("time2", t);
+		        	} else if(tmax===t3){
+		            	localStorage.setItem("time3", t);
+		        	} else if(tmax===t4){
+		            	localStorage.setItem("time4", t);
+		        	} else{
+		            	localStorage.setItem("time5", t);
+		        	}
+		    	}
+			}
+		}
+
+		shuffle(numbers);
+
+		var squares = document.querySelectorAll(".square");
+
+		for(var i=0; i<squares.length; i++){
+			squares[i].innerHTML = numbers[i]; 
+		}
+
+
+		document.querySelectorAll(".square")[0].addEventListener("click", function(){
+
+			var x = check0()
+			if(x){
+				if (document.querySelectorAll(".square")[0].innerHTML<=20) {
+					document.querySelectorAll(".square")[0].innerHTML=numbers[0]+20
+				} else if (document.querySelectorAll(".square")[0].innerHTML==40) {
+					timestop();
+					document.querySelectorAll(".square")[0].innerHTML="_";
+				} else {
+					document.querySelectorAll(".square")[0].innerHTML="_";
+				}
+			}
+		});		
+			
+		function check0(){
+			var arr = [];
+			for(var i=0; i<20; i++){
+				arr[i]=parseInt(document.querySelectorAll(".square")[i].innerHTML);
+			}
+			if(arr.indexOf(document.querySelectorAll(".square")[0].innerHTML-1)===-1){
+				return true;
+			}else{
+				return false;
+			}
+		}
+
+		document.querySelectorAll(".square")[1].addEventListener("click", function(){
+
+			var x = check1()
+			if(x){
+				if (document.querySelectorAll(".square")[1].innerHTML<=20) {
+					document.querySelectorAll(".square")[1].innerHTML=numbers[1]+20
+				} else if (document.querySelectorAll(".square")[1].innerHTML==40) {
+					timestop();
+					document.querySelectorAll(".square")[1].innerHTML="_";
+				} else {
+					document.querySelectorAll(".square")[1].innerHTML="_";
+				}
+			}
+		});		
+			
+		function check1(){
+			var arr = [];
+			for(var i=0; i<20; i++){
+				arr[i]=parseInt(document.querySelectorAll(".square")[i].innerHTML);
+			}
+			if(arr.indexOf(document.querySelectorAll(".square")[1].innerHTML-1)===-1){
+				return true;
+			}else{
+				return false;
+			}
+		}
+
+		document.querySelectorAll(".square")[2].addEventListener("click", function(){
+
+			var x = check2()
+			if(x){
+				if (document.querySelectorAll(".square")[2].innerHTML<=20) {
+					document.querySelectorAll(".square")[2].innerHTML=numbers[2]+20
+				} else if (document.querySelectorAll(".square")[2].innerHTML==40) {
+					timestop();
+					document.querySelectorAll(".square")[2].innerHTML="_";
+				} else {
+					document.querySelectorAll(".square")[2].innerHTML="_";
+				}
+			}
+		});		
+			
+		function check2(){
+			var arr = [];
+			for(var i=0; i<20; i++){
+				arr[i]=parseInt(document.querySelectorAll(".square")[i].innerHTML);
+			}
+			if(arr.indexOf(document.querySelectorAll(".square")[2].innerHTML-1)===-1){
+				return true;
+			}else{
+				return false;
+			}
+		}
+
+		document.querySelectorAll(".square")[3].addEventListener("click", function(){
+
+			var x = check3()
+			if(x){
+				if (document.querySelectorAll(".square")[3].innerHTML<=20) {
+					document.querySelectorAll(".square")[3].innerHTML=numbers[3]+20
+				} else if (document.querySelectorAll(".square")[3].innerHTML==40) {
+					timestop();
+					document.querySelectorAll(".square")[3].innerHTML="_";
+				} else {
+					document.querySelectorAll(".square")[3].innerHTML="_";
+				}
+			}
+		});		
+			
+		function check3(){
+			var arr = [];
+			for(var i=0; i<20; i++){
+				arr[i]=parseInt(document.querySelectorAll(".square")[i].innerHTML);
+			}
+			if(arr.indexOf(document.querySelectorAll(".square")[3].innerHTML-1)===-1){
+				return true;
+			}else{
+				return false;
+			}
+		}
+
+		document.querySelectorAll(".square")[4].addEventListener("click", function(){
+
+			var x = check4()
+			if(x){
+				if (document.querySelectorAll(".square")[4].innerHTML<=20) {
+					document.querySelectorAll(".square")[4].innerHTML=numbers[4]+20
+				} else if (document.querySelectorAll(".square")[4].innerHTML==40) {
+					timestop();
+					document.querySelectorAll(".square")[4].innerHTML="_";
+				} else {
+					document.querySelectorAll(".square")[4].innerHTML="_";
+				}
+			}
+		});		
+			
+		function check4(){
+			var arr = [];
+			for(var i=0; i<20; i++){
+				arr[i]=parseInt(document.querySelectorAll(".square")[i].innerHTML);
+			}
+			if(arr.indexOf(document.querySelectorAll(".square")[4].innerHTML-1)===-1){
+				return true;
+			}else{
+				return false;
+			}
+		}
+
+		document.querySelectorAll(".square")[5].addEventListener("click", function(){
+
+			var x = check5()
+			if(x){
+				if (document.querySelectorAll(".square")[5].innerHTML<=20) {
+					document.querySelectorAll(".square")[5].innerHTML=numbers[5]+20
+				} else if (document.querySelectorAll(".square")[5].innerHTML==40) {
+					timestop();
+					document.querySelectorAll(".square")[5].innerHTML="_";
+				} else {
+					document.querySelectorAll(".square")[5].innerHTML="_";
+				}
+			}
+		});		
+			
+		function check5(){
+			var arr = [];
+			for(var i=0; i<20; i++){
+				arr[i]=parseInt(document.querySelectorAll(".square")[i].innerHTML);
+			}
+			if(arr.indexOf(document.querySelectorAll(".square")[5].innerHTML-1)===-1){
+				return true;
+			}else{
+				return false;
+			}
+		}
+
+		document.querySelectorAll(".square")[6].addEventListener("click", function(){
+
+			var x = check6()
+			if(x){
+				if (document.querySelectorAll(".square")[6].innerHTML<=20) {
+					document.querySelectorAll(".square")[6].innerHTML=numbers[6]+20
+				} else if (document.querySelectorAll(".square")[6].innerHTML==40) {
+					timestop();
+					document.querySelectorAll(".square")[6].innerHTML="_";
+				} else {
+					document.querySelectorAll(".square")[6].innerHTML="_";
+				}
+			}
+		});		
+			
+		function check6(){
+			var arr = [];
+			for(var i=0; i<20; i++){
+				arr[i]=parseInt(document.querySelectorAll(".square")[i].innerHTML);
+			}
+			if(arr.indexOf(document.querySelectorAll(".square")[6].innerHTML-1)===-1){
+				return true;
+			}else{
+				return false;
+			}
+		}
+
+		document.querySelectorAll(".square")[7].addEventListener("click", function(){
+
+			var x = check7()
+			if(x){
+				if (document.querySelectorAll(".square")[7].innerHTML<=20) {
+					document.querySelectorAll(".square")[7].innerHTML=numbers[7]+20
+				} else if (document.querySelectorAll(".square")[7].innerHTML==40) {
+					timestop();
+					document.querySelectorAll(".square")[7].innerHTML="_";
+				} else {
+					document.querySelectorAll(".square")[7].innerHTML="_";
+				}
+			}
+		});		
+			
+		function check7(){
+			var arr = [];
+			for(var i=0; i<20; i++){
+				arr[i]=parseInt(document.querySelectorAll(".square")[i].innerHTML);
+			}
+			if(arr.indexOf(document.querySelectorAll(".square")[7].innerHTML-1)===-1){
+				return true;
+			}else{
+				return false;
+			}
+		}
+
+		document.querySelectorAll(".square")[8].addEventListener("click", function(){
+
+			var x = check8()
+			if(x){
+				if (document.querySelectorAll(".square")[8].innerHTML<=20) {
+					document.querySelectorAll(".square")[8].innerHTML=numbers[8]+20
+				} else if (document.querySelectorAll(".square")[8].innerHTML==40) {
+					timestop();
+					document.querySelectorAll(".square")[8].innerHTML="_";
+				} else {
+					document.querySelectorAll(".square")[8].innerHTML="_";
+				}
+			}
+		});		
+			
+		function check8(){
+			var arr = [];
+			for(var i=0; i<20; i++){
+				arr[i]=parseInt(document.querySelectorAll(".square")[i].innerHTML);
+			}
+			if(arr.indexOf(document.querySelectorAll(".square")[8].innerHTML-1)===-1){
+				return true;
+			}else{
+				return false;
+			}
+		}
+
+		document.querySelectorAll(".square")[9].addEventListener("click", function(){
+
+			var x = check9()
+			if(x){
+				if (document.querySelectorAll(".square")[9].innerHTML<=20) {
+					document.querySelectorAll(".square")[9].innerHTML=numbers[9]+20
+				} else if (document.querySelectorAll(".square")[9].innerHTML==40) {
+					timestop();
+					document.querySelectorAll(".square")[9].innerHTML="_";
+				} else {
+					document.querySelectorAll(".square")[9].innerHTML="_";
+				}
+			}
+		});		
+			
+		function check9(){
+			var arr = [];
+			for(var i=0; i<20; i++){
+				arr[i]=parseInt(document.querySelectorAll(".square")[i].innerHTML);
+			}
+			if(arr.indexOf(document.querySelectorAll(".square")[9].innerHTML-1)===-1){
+				return true;
+			}else{
+				return false;
+			}
+		}
+
+		document.querySelectorAll(".square")[10].addEventListener("click", function(){
+
+			var x = check10()
+			if(x){
+				if (document.querySelectorAll(".square")[10].innerHTML<=20) {
+					document.querySelectorAll(".square")[10].innerHTML=numbers[10]+20
+				} else if (document.querySelectorAll(".square")[10].innerHTML==40) {
+					timestop();
+					document.querySelectorAll(".square")[10].innerHTML="_";
+				} else {
+					document.querySelectorAll(".square")[10].innerHTML="_";
+				}
+			}
+		});		
+			
+		function check10(){
+			var arr = [];
+			for(var i=0; i<20; i++){
+				arr[i]=parseInt(document.querySelectorAll(".square")[i].innerHTML);
+			}
+			if(arr.indexOf(document.querySelectorAll(".square")[10].innerHTML-1)===-1){
+				return true;
+			}else{
+				return false;
+			}
+		}
+
+		document.querySelectorAll(".square")[11].addEventListener("click", function(){
+
+			var x = check11()
+			if(x){
+				if (document.querySelectorAll(".square")[11].innerHTML<=20) {
+					document.querySelectorAll(".square")[11].innerHTML=numbers[11]+20
+				} else if (document.querySelectorAll(".square")[11].innerHTML==40) {
+					timestop();
+					document.querySelectorAll(".square")[11].innerHTML="_";
+				} else {
+					document.querySelectorAll(".square")[11].innerHTML="_";
+				}
+			}
+		});		
+			
+		function check11(){
+			var arr = [];
+			for(var i=0; i<20; i++){
+				arr[i]=parseInt(document.querySelectorAll(".square")[i].innerHTML);
+			}
+			if(arr.indexOf(document.querySelectorAll(".square")[11].innerHTML-1)===-1){
+				return true;
+			}else{
+				return false;
+			}
+		}
+
+		document.querySelectorAll(".square")[12].addEventListener("click", function(){
+
+			var x = check12()
+			if(x){
+				if (document.querySelectorAll(".square")[12].innerHTML<=20) {
+					document.querySelectorAll(".square")[12].innerHTML=numbers[12]+20
+				} else if (document.querySelectorAll(".square")[12].innerHTML==40) {
+					timestop();
+					document.querySelectorAll(".square")[12].innerHTML="_";
+				} else {
+					document.querySelectorAll(".square")[12].innerHTML="_";
+				}
+			}
+		});		
+			
+		function check12(){
+			var arr = [];
+			for(var i=0; i<20; i++){
+				arr[i]=parseInt(document.querySelectorAll(".square")[i].innerHTML);
+			}
+			if(arr.indexOf(document.querySelectorAll(".square")[12].innerHTML-1)===-1){
+				return true;
+			}else{
+				return false;
+			}
+		}
+
+		document.querySelectorAll(".square")[13].addEventListener("click", function(){
+
+			var x = check13()
+			if(x){
+				if (document.querySelectorAll(".square")[13].innerHTML<=20) {
+					document.querySelectorAll(".square")[13].innerHTML=numbers[13]+20
+				} else if (document.querySelectorAll(".square")[13].innerHTML==40) {
+					timestop();
+					document.querySelectorAll(".square")[13].innerHTML="_";
+				} else {
+					document.querySelectorAll(".square")[13].innerHTML="_";
+				}
+			}
+		});		
+			
+		function check13(){
+			var arr = [];
+			for(var i=0; i<20; i++){
+				arr[i]=parseInt(document.querySelectorAll(".square")[i].innerHTML);
+			}
+			if(arr.indexOf(document.querySelectorAll(".square")[13].innerHTML-1)===-1){
+				return true;
+			}else{
+				return false;
+			}
+		}
+
+		document.querySelectorAll(".square")[14].addEventListener("click", function(){
+
+			var x = check14()
+			if(x){
+				if (document.querySelectorAll(".square")[14].innerHTML<=20) {
+					document.querySelectorAll(".square")[14].innerHTML=numbers[14]+20
+				} else if (document.querySelectorAll(".square")[14].innerHTML==40) {
+					timestop();
+					document.querySelectorAll(".square")[14].innerHTML="_";
+				} else {
+					document.querySelectorAll(".square")[14].innerHTML="_";
+				}
+			}
+		});		
+			
+		function check14(){
+			var arr = [];
+			for(var i=0; i<20; i++){
+				arr[i]=parseInt(document.querySelectorAll(".square")[i].innerHTML);
+			}
+			if(arr.indexOf(document.querySelectorAll(".square")[14].innerHTML-1)===-1){
+				return true;
+			}else{
+				return false;
+			}
+		}
+
+		document.querySelectorAll(".square")[15].addEventListener("click", function(){
+
+			var x = check15()
+			if(x){
+				if (document.querySelectorAll(".square")[15].innerHTML<=20) {
+					document.querySelectorAll(".square")[15].innerHTML=numbers[15]+20
+				} else if (document.querySelectorAll(".square")[15].innerHTML==40) {
+					timestop();
+					document.querySelectorAll(".square")[15].innerHTML="_";
+				} else {
+					document.querySelectorAll(".square")[15].innerHTML="_";
+				}
+			}
+		});		
+			
+		function check15(){
+			var arr = [];
+			for(var i=0; i<20; i++){
+				arr[i]=parseInt(document.querySelectorAll(".square")[i].innerHTML);
+			}
+			if(arr.indexOf(document.querySelectorAll(".square")[15].innerHTML-1)===-1){
+				return true;
+			}else{
+				return false;
+			}
+		}
+
+		document.querySelectorAll(".square")[16].addEventListener("click", function(){
+
+			var x = check16()
+			if(x){
+				if (document.querySelectorAll(".square")[16].innerHTML<=20) {
+					document.querySelectorAll(".square")[16].innerHTML=numbers[16]+20
+				} else if (document.querySelectorAll(".square")[16].innerHTML==40) {
+					timestop();
+					document.querySelectorAll(".square")[16].innerHTML="_";
+				} else {
+					document.querySelectorAll(".square")[16].innerHTML="_";
+				}
+			}
+		});		
+			
+		function check16(){
+			var arr = [];
+			for(var i=0; i<20; i++){
+				arr[i]=parseInt(document.querySelectorAll(".square")[i].innerHTML);
+			}
+			if(arr.indexOf(document.querySelectorAll(".square")[16].innerHTML-1)===-1){
+				return true;
+			}else{
+				return false;
+			}
+		}
+
+		document.querySelectorAll(".square")[17].addEventListener("click", function(){
+
+			var x = check17()
+			if(x){
+				if (document.querySelectorAll(".square")[17].innerHTML<=20) {
+					document.querySelectorAll(".square")[17].innerHTML=numbers[17]+20
+				} else if (document.querySelectorAll(".square")[17].innerHTML==40) {
+					timestop();
+					document.querySelectorAll(".square")[17].innerHTML="_";
+				} else {
+					document.querySelectorAll(".square")[17].innerHTML="_";
+				}
+			}
+		});		
+			
+		function check17(){
+			var arr = [];
+			for(var i=0; i<20; i++){
+				arr[i]=parseInt(document.querySelectorAll(".square")[i].innerHTML);
+			}
+			if(arr.indexOf(document.querySelectorAll(".square")[17].innerHTML-1)===-1){
+				return true;
+			}else{
+				return false;
+			}
+		}
+
+		document.querySelectorAll(".square")[18].addEventListener("click", function(){
+
+			var x = check18()
+			if(x){
+				if (document.querySelectorAll(".square")[18].innerHTML<=20) {
+					document.querySelectorAll(".square")[18].innerHTML=numbers[18]+20
+				} else if (document.querySelectorAll(".square")[18].innerHTML==40) {
+					timestop();
+					document.querySelectorAll(".square")[18].innerHTML="_";
+				} else {
+					document.querySelectorAll(".square")[18].innerHTML="_";
+				}
+			}
+		});		
+			
+		function check18(){
+			var arr = [];
+			for(var i=0; i<20; i++){
+				arr[i]=parseInt(document.querySelectorAll(".square")[i].innerHTML);
+			}
+			if(arr.indexOf(document.querySelectorAll(".square")[18].innerHTML-1)===-1){
+				return true;
+			}else{
+				return false;
+			}
+		}
+
+		document.querySelectorAll(".square")[19].addEventListener("click", function(){
+
+			var x = check19()
+			if(x){
+				if (document.querySelectorAll(".square")[19].innerHTML<=20) {
+					document.querySelectorAll(".square")[19].innerHTML=numbers[19]+20
+				} else if (document.querySelectorAll(".square")[19].innerHTML==40) {
+					timestop();
+					document.querySelectorAll(".square")[19].innerHTML="_";
+				} else {
+					document.querySelectorAll(".square")[19].innerHTML="_";
+				}
+			}
+		});		
+			
+		function check19(){
+			var arr = [];
+			for(var i=0; i<20; i++){
+				arr[i]=parseInt(document.querySelectorAll(".square")[i].innerHTML);
+			}
+			if(arr.indexOf(document.querySelectorAll(".square")[19].innerHTML-1)===-1){
+				return true;
+			}else{
+				return false;
+			}
+		}
+	}
+</script>
+</body>
+
+</html>
